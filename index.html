@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Happy Birthday 🎂</title>
+<meta name="description" content="Hadiah ulang tahun digital yang romantis dan interaktif" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Dancing+Script:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ============================================================
+  ZONA KONFIGURASI CEPAT
+  Ganti nilai-nilai di data-attribute pada tag <body> ini,
+  atau langsung edit CONFIG di js/script.js — keduanya terhubung.
+============================================================= -->
+<div id="app"
+  data-name="Sayang"
+  data-age="24"
+>
+
+  <!-- Kursor sparkle (khusus desktop, dimatikan otomatis di mobile lewat JS) -->
+  <div id="cursor-glow" aria-hidden="true"></div>
+
+  <!-- ============================ -->
+  <!-- 1. HERO / LANDING            -->
+  <!-- ============================ -->
+  <section id="hero" class="screen">
+    <div class="bg-gradient"></div>
+    <div class="floaters" id="hero-floaters" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">sebuah hadiah kecil, untuk hari besarmu</p>
+      <h1 class="hero-title">
+        Happy Birthday, <span class="name-fill" data-field="name">Sayang</span> <span class="heart-emoji">❤️</span>
+      </h1>
+      <p class="hero-subtitle">Hari ini adalah hari spesial untuk seseorang yang sangat spesial.</p>
+      <button class="btn btn-primary" id="open-gift-btn">
+        <span>Buka Hadiah</span> <span class="btn-emoji">🎁</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================ -->
+  <!-- OVERLAY: ANIMASI PEMBUKAAN   -->
+  <!-- ============================ -->
+  <!-- Canvas kembang api untuk momen pembukaan hadiah (full-screen sesaat) -->
+  <canvas id="intro-fireworks-canvas" class="intro-fireworks-canvas" aria-hidden="true"></canvas>
+
+  <div id="gift-overlay" class="gift-overlay" aria-hidden="true" hidden>
+    <div class="gift-box" id="gift-box">
+      <div class="gift-lid"></div>
+      <div class="gift-base"></div>
+      <div class="gift-ribbon-v"></div>
+      <div class="gift-ribbon-h"></div>
+      <div class="gift-bow"></div>
+    </div>
+    <p class="gift-hint">mengetuk pintu kejutanmu...</p>
+  </div>
+
+  <!-- Semua konten utama disembunyikan sampai hadiah dibuka -->
+  <main id="main-content" class="main-content" hidden>
+
+    <!-- ============================ -->
+    <!-- NAV MUSIK (mengambang)      -->
+    <!-- ============================ -->
+    <button id="music-toggle" class="music-fab" aria-label="Putar musik" aria-pressed="false">
+      <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="music-icon">🎵</span>
+    </button>
+    <audio id="bg-music" src="music/birthday.mp3" loop preload="none"></audio>
+
+    <!-- ============================================================
+      HALAMAN BERPINDAH (paged navigation)
+      Setiap <section class="page"> = satu halaman fokus tersendiri.
+      Navigasi lewat tombol panah, titik indikator, swipe, atau
+      tombol panah keyboard — bukan scroll biasa.
+    ============================================================= -->
+    <div id="pages" class="pages-wrap">
+
+      <!-- ============================ -->
+      <!-- 1. BIRTHDAY REVEAL           -->
+      <!-- ============================ -->
+      <section id="reveal" class="page reveal-screen" data-state="active">
+        <div class="petals-layer" id="petals-hero" aria-hidden="true"></div>
+        <div class="reveal-inner reveal-anim">
+          <p class="section-eyebrow">untuk kamu,</p>
+          <h2 class="reveal-title" data-field="name">Sayang</h2>
+          <p class="reveal-line">semoga harimu dipenuhi hal-hal kecil yang membahagiakan.</p>
+          <button class="btn btn-ghost" id="scroll-to-message">Baca Pesannya <span class="btn-emoji">💌</span></button>
+        </div>
+      </section>
+
+      <!-- ============================ -->
+      <!-- 2. UCAPAN (SURAT)            -->
+      <!-- ============================ -->
+      <section id="message" class="page" data-state="hidden">
+        <div class="section-flowers" aria-hidden="true">
+          <svg class="flower flower-rose" viewBox="0 0 100 100"><use href="#svg-rose"/></svg>
+          <svg class="flower flower-sakura flip" viewBox="0 0 100 100"><use href="#svg-sakura"/></svg>
+        </div>
+
+        <div class="fade-up letter-wrap">
+          <p class="section-eyebrow">sepucuk surat</p>
+          <h2 class="section-title">Untukmu, <span data-field="name">Sayang</span></h2>
+
+          <article class="letter-card">
+            <div class="letter-seal">❤</div>
+            <!-- GANTI TEKS DI BAWAH INI DENGAN PESANMU SENDIRI -->
+            <p id="birthday-message" class="letter-text">
+              Selamat ulang tahun, <span data-field="name">Sayang</span>. Semoga di usia yang baru ini semua hal baik datang kepadamu.
+              Semoga kamu selalu dikelilingi orang-orang yang menyayangimu, diberikan kesehatan, kebahagiaan,
+              dan dimudahkan dalam mencapai semua impianmu. Terima kasih sudah menjadi bagian paling hangat dari hidupku.
+            </p>
+            <p class="letter-signature">— dengan sayang</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============================ -->
+      <!-- 3. FOTO KENANGAN             -->
+      <!-- ============================ -->
+      <section id="gallery" class="page" data-state="hidden">
+        <div class="fade-up">
+          <p class="section-eyebrow">galeri kecil</p>
+          <h2 class="section-title">Foto Kenangan 📸</h2>
+          <p class="section-desc">Beberapa potongan waktu yang ingin kusimpan selamanya.</p>
+        </div>
+
+        <!-- Untuk mengganti foto: ubah src="images/photoX.jpg" jadi foto kamu.
+             Jika file belum ada, placeholder gradient otomatis akan tampil. -->
+        <div class="polaroid-grid fade-up" id="polaroid-grid">
+          <figure class="polaroid rot-1">
+            <img src="images/photo1.jpg" alt="Kenangan 1" loading="lazy" data-ph-label="Foto 1">
+            <figcaption>momen pertama kita</figcaption>
+          </figure>
+          <figure class="polaroid rot-2">
+            <img src="images/photo2.jpg" alt="Kenangan 2" loading="lazy" data-ph-label="Foto 2">
+            <figcaption>tawa yang tak terlupakan</figcaption>
+          </figure>
+          <figure class="polaroid rot-3">
+            <img src="images/photo3.jpg" alt="Kenangan 3" loading="lazy" data-ph-label="Foto 3">
+            <figcaption>hari-hari sederhana</figcaption>
+          </figure>
+          <figure class="polaroid rot-4">
+            <img src="images/photo4.jpg" alt="Kenangan 4" loading="lazy" data-ph-label="Foto 4">
+            <figcaption>dan masih banyak lagi</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============================ -->
+      <!-- 4. TIMELINE                  -->
+      <!-- ============================ -->
+      <section id="timeline" class="page" data-state="hidden">
+        <div class="fade-up">
+          <p class="section-eyebrow">kenangan dalam bingkai</p>
+          <h2 class="section-title">Photobooth Kenangan 🎞️</h2>
+          <p class="section-desc">Dicetak ulang dari momen-momen yang paling ingin kusimpan.</p>
+        </div>
+
+        <!-- Strip foto diisi otomatis oleh JS dari CONFIG.photobooth di js/script.js,
+             supaya kamu cukup ganti path foto & jumlah strip di satu tempat saja. -->
+        <div class="photobooth-row fade-up" id="photobooth-row"></div>
+
+        <!-- Counter umur -->
+        <div class="age-counter fade-up">
+          <p class="age-label">Today You Are</p>
+          <p class="age-number" id="age-number" data-target="24">0</p>
+          <p class="age-label">Years Old 🎂</p>
+        </div>
+      </section>
+
+      <!-- ============================ -->
+      <!-- 5. BIRTHDAY CAKE             -->
+      <!-- ============================ -->
+      <section id="cake" class="page" data-state="hidden">
+        <div class="fade-up">
+          <p class="section-eyebrow">saatnya bikin permohonan</p>
+          <h2 class="section-title">Tiup Lilinnya 🕯️</h2>
+        </div>
+
+        <div class="cake-wrap fade-up">
+          <div class="cake" id="cake-el">
+            <div class="candle" data-lit="true"><span class="flame"></span></div>
+            <div class="candle" data-lit="true"><span class="flame"></span></div>
+            <div class="candle" data-lit="true"><span class="flame"></span></div>
+            <div class="cake-top">
+              <span class="drip d1"></span><span class="drip d2"></span><span class="drip d3"></span>
+            </div>
+            <div class="cake-mid"></div>
+            <div class="cake-base"></div>
+            <div class="cake-plate"></div>
+          </div>
+
+          <button class="btn btn-primary" id="blow-candles-btn">Tiup Lilinnya <span class="btn-emoji">🕯️</span></button>
+          <p class="wish-text" id="wish-text" hidden>Make a wish... ✨</p>
+        </div>
+      </section>
+
+      <!-- ============================ -->
+      <!-- 6. TOMBOL CELEBRATION + FIREWORKS -->
+      <!-- ============================ -->
+      <section id="celebrate" class="page celebrate-screen" data-state="hidden">
+        <canvas id="fireworks-canvas" aria-hidden="true"></canvas>
+        <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+        <div class="celebrate-inner fade-up">
+          <p class="section-eyebrow">satu tombol lagi</p>
+          <h2 class="section-title">Siap merayakannya?</h2>
+          <button class="btn btn-primary btn-lg" id="celebrate-btn">Rayakan! <span class="btn-emoji">🎆</span></button>
+        </div>
+
+        <div class="final-message" id="final-message" hidden>
+          <h2 class="final-title">Happy Birthday, <span data-field="name">Sayang</span> <span>❤️</span></h2>
+          <p class="final-sub">Semoga semua impianmu satu per satu menjadi kenyataan.</p>
+        </div>
+
+        <footer class="footer">
+          <p>dibuat dengan ❤️ , khusus untuk <span data-field="name">Sayang</span></p>
+        </footer>
+      </section>
+
+    </div>
+
+    <!-- ============================ -->
+    <!-- NAVIGASI ANTAR HALAMAN       -->
+    <!-- ============================ -->
+    <nav class="page-nav" aria-label="Navigasi halaman">
+      <button id="page-prev" class="page-nav-arrow" aria-label="Halaman sebelumnya">‹</button>
+      <div class="page-dots" id="page-dots" role="tablist" aria-label="Daftar halaman"></div>
+      <button id="page-next" class="page-nav-arrow" aria-label="Halaman berikutnya">›</button>
+    </nav>
+
+  </main>
+
+</div>
+
+<!-- Template bingkai bunga melingkar (wreath) untuk caption di bawah tiap strip
+     photobooth — di-clone lewat JS ke setiap .wreath-ring, jadi tidak perlu
+     ditulis ulang manual untuk setiap strip. -->
+<template id="wreath-template">
+  <div class="wreath-ring" aria-hidden="true">
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(0deg) translate(0,-58px) rotate(-0deg);"><use href="#svg-sakura"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(36deg) translate(0,-58px) rotate(-36deg);"><use href="#svg-rose"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(72deg) translate(0,-58px) rotate(-72deg);"><use href="#svg-sakura"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(108deg) translate(0,-58px) rotate(-108deg);"><use href="#svg-rose"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(144deg) translate(0,-58px) rotate(-144deg);"><use href="#svg-sakura"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(180deg) translate(0,-58px) rotate(-180deg);"><use href="#svg-rose"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(216deg) translate(0,-58px) rotate(-216deg);"><use href="#svg-sakura"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(252deg) translate(0,-58px) rotate(-252deg);"><use href="#svg-rose"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(288deg) translate(0,-58px) rotate(-288deg);"><use href="#svg-sakura"/></svg>
+      <svg class="wreath-flower" viewBox="0 0 100 100" style="transform: rotate(324deg) translate(0,-58px) rotate(-324deg);"><use href="#svg-rose"/></svg>
+    <div class="wreath-text">
+      <p class="wreath-eyebrow">The Birthday</p>
+      <p class="wreath-name" data-field="name">Sayang</p>
+    </div>
+  </div>
+</template>
+
+<!-- Definisi SVG bunga, dipakai berulang lewat <use> supaya ringan -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="svg-rose" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="10" fill="#E85D8C"/>
+      <path d="M50 50 C30 40,30 15,50 20 C70 15,70 40,50 50Z" fill="#F4A6C6" opacity="0.9"/>
+      <path d="M50 50 C25 55,15 35,25 20 C15 45,30 60,50 50Z" fill="#EF83AC" opacity="0.9"/>
+      <path d="M50 50 C75 55,85 35,75 20 C85 45,70 60,50 50Z" fill="#EF83AC" opacity="0.9"/>
+      <path d="M50 50 C40 75,15 80,15 60 C10 80,40 90,50 50Z" fill="#F4A6C6" opacity="0.85"/>
+      <path d="M50 50 C60 75,85 80,85 60 C90 80,60 90,50 50Z" fill="#F4A6C6" opacity="0.85"/>
+    </symbol>
+    <symbol id="svg-sakura" viewBox="0 0 100 100">
+      <g fill="#FBD1E3">
+        <ellipse cx="50" cy="30" rx="12" ry="18"/>
+        <ellipse cx="50" cy="70" rx="12" ry="18"/>
+        <ellipse cx="30" cy="50" rx="18" ry="12"/>
+        <ellipse cx="70" cy="50" rx="18" ry="12"/>
+        <ellipse cx="35" cy="35" rx="14" ry="16" transform="rotate(45 35 35)"/>
+      </g>
+      <circle cx="50" cy="50" r="8" fill="#E8C15C"/>
+    </symbol>
+    <symbol id="svg-tulip" viewBox="0 0 100 100">
+      <path d="M50 20 C30 20,25 45,50 60 C75 45,70 20,50 20Z" fill="#C79EE8"/>
+      <path d="M50 60 L50 90" stroke="#8FBF8F" stroke-width="4" fill="none"/>
+    </symbol>
+  </defs>
+</svg>
+
+<script src="js/script.js"></script>
+</body>
+</html>
